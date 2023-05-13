@@ -1,36 +1,30 @@
 #include "Generation.h"
+#include "Chromosome.h"
+#include <time.h>
+#include <algorithm>
 using namespace std;
 
-#define _POPULATION_SIZE_ 100
-
-Generation::Generation(double mutationRate) {
+Generation::Generation(int populationSize, int chromosomeSize, double mutationRate) {
     this->mutationRate = mutationRate;
-    unsigned long *generation = new unsigned long[_POPULATION_SIZE_];
-    srand(time(NULL));
-    for(int i = 0; i < _POPULATION_SIZE_; i++) {
-        generation[i] = 0;
-        for(int j = 0; j < 32; j++) {
-            generation[i] = generation[i] << 1;
-            generation[i] = generation[i] | (rand() % 2);
-        }
-    }
+    this->populationSize = populationSize;
+    this->chromosomeSize = chromosomeSize;
+    vector<Chromosome> population;
+    createChromosomes(population, populationSize, chromosomeSize);
+    cout << "Generation created with " << populationSize << " chromosomes of size " << chromosomeSize << endl;
 }
 
 Generation::~Generation() {
-    delete[] generation;
+    cout << "Generation destroyed" << endl;
 }
 
-void Generation::evolve() {
+void Generation::createChromosomes(vector<Chromosome>& population, int populationSize, int chromosomeSize) {
     srand(time(NULL));
-    for(int i = 0; i < _POPULATION_SIZE_; i++) {
-        for(int j=0; j < 64; j++) {
-            unsigned int foo = (((double)rand() / RAND_MAX) < mutationRate ? 0 : 1);
-            foo = foo << j;
-            generation[i] ^= foo;
-        }
+    for(int i = 0; i < populationSize; i++) {
+        Chromosome c();
+        population.push_back(c);
     }
 }
 
-long Generation::getBestChromosome() {
-    return generation[0];
+bool Generation::compareChromosomes(Chromosome c1, Chromosome c2) {
+    return c1.getFitness() > c2.getFitness();
 }

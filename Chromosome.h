@@ -1,4 +1,3 @@
-#include "Generation.h"
 #include "Main.h"
 using namespace std;
 #pragma once
@@ -10,8 +9,10 @@ private:
     unsigned char *generation;
     double fitness;
 public:
-    Chromosome(unsigned int sizeIn);
+    //Chromosome(unsigned int sizeIn);
+    Chromosome();
     ~Chromosome();
+    void setup(unsigned int sizeIn);
     void mutate(double mutationRate);
     double updateFitness();
     double getFitness();

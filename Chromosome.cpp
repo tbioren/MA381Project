@@ -1,9 +1,19 @@
 #include "Chromosome.h"
+#include <time.h>
 #include "Main.h"
 #include <bitset>
 using namespace std;
 
-Chromosome::Chromosome(unsigned int sizeIn) {
+#define _CHROMOSOME_SIZE_ 32
+
+Chromosome::Chromosome() {
+}
+
+Chromosome::~Chromosome() {
+    delete[] generation;
+}
+
+void Chromosome::setup(unsigned int sizeIn) {
     this->size = sizeIn;
     this->byteSize = (sizeIn + 7) / 8;
     this->generation = new unsigned char[byteSize];
@@ -11,10 +21,6 @@ Chromosome::Chromosome(unsigned int sizeIn) {
         generation[i] = 0;
     }
     this->fitness = 0;
-}
-
-Chromosome::~Chromosome() {
-    delete[] generation;
 }
 
 void Chromosome::mutate(double mutationRate) {

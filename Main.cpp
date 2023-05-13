@@ -2,14 +2,14 @@
 #include <bitset>
 #include "Main.h"
 #include "Chromosome.h"
+#include "Generation.h"
 
 using namespace std;
 
 #define _IDEAL_CHROMOSOME_ 0x00000000
 
 int main() {
-    Chromosome c(10);
-    cout << c.updateFitness() << endl;
-    c.mutate(0.5);
-    cout << c.updateFitness() << endl;
+    Generation g(100, 32, 0.01);
+    //g.evolve();
+    return 0;
 }
