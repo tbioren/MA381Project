@@ -3,6 +3,8 @@ import java.util.Arrays;
 public class Chromosome implements Comparable<Chromosome>{
     private char[] genes;
     private double fitness;
+    private static final byte[] powersOf2 = {0,25,50,75,100};
+    private double setBits;
 
     public Chromosome(char[] genes) {
         this.genes = Arrays.copyOf(genes, genes.length);
@@ -24,12 +26,25 @@ public class Chromosome implements Comparable<Chromosome>{
     }
 
     // Currently fittest gene is one that is all 1s
+    // public double updateFitness() {
+    //     int totalSet = 0;
+    //     for(int i=0; i < genes.length; i++) {
+    //         totalSet += countSetBits(genes[i]);
+    //     }
+    //     fitness = (double)totalSet / (genes.length * 8);
+    //     return fitness;
+    // }
+
     public double updateFitness() {
-        int totalSet = 0;
+        setBits = 0;
         for(int i=0; i < genes.length; i++) {
-            totalSet += countSetBits(genes[i]);
+            setBits += countSetBits(genes[i]);
         }
-        fitness = (double)totalSet / (genes.length * 8);
+        double distToSpecialNum = Double.MAX_VALUE;
+        for(double specialNum : powersOf2) {
+            if(distToSpecialNum > Math.abs(specialNum - setBits)) distToSpecialNum = Math.abs(specialNum - setBits);
+        }
+        fitness = setBits - distToSpecialNum;
         return fitness;
     }
 

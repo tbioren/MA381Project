@@ -1,3 +1,4 @@
+import java.sql.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -56,6 +57,9 @@ public class Generation {
                 break;
             case RANK:
                 bestChromosomes = selectRank(genSansElites);
+                break;
+            case BEST_RANDOM_WORST:
+                bestChromosomes = selectBestRandomWorst(genSansElites);
                 break;
         }
         if(crossover) bestChromosomes = crossover(bestChromosomes); // Crossover the best chromosomes LEAVE COMMENTED FOR M2
@@ -155,6 +159,9 @@ public class Generation {
 
     // Selects the chromosomes from the generation with the given selection method (I'm not sure if this works)
     private ArrayList<Chromosome> selectRoulette(ArrayList<Chromosome> newGen) {
+        for(Chromosome chromo : newGen) {
+            chromo.updateFitness();
+        }
         ArrayList<Integer> roulette = new ArrayList<>();
         for (int i = 0; i < newGen.size(); i++) {
             for (int j = 0; j < newGen.get(i).getFitness(); j++) {
@@ -176,6 +183,21 @@ public class Generation {
             newGen.get(i).setFitness(i+1);
         }
         return selectRoulette(newGen);
+    }
+
+    private ArrayList<Chromosome> selectBestRandomWorst(ArrayList<Chromosome> newGen) {
+        ArrayList<Chromosome> nextGen = new ArrayList<Chromosome>();
+        updateFitness();
+        for(int i=0; i < newGen.size()/6; i++) {
+            char[] genes = Arrays.copyOf(newGen.get(i).getGenes(), newGen.get(i).getGenes().length);
+            nextGen.add(new Chromosome(genes));
+            genes = Arrays.copyOf(newGen.get(newGen.size() - i-1).getGenes(), newGen.get(newGen.size() - i-1).getGenes().length);
+            nextGen.add(new Chromosome(genes));
+        }
+        while(nextGen.size() < newGen.size()/2) {
+            nextGen.add(newGen.get((int) (Math.random() * newGen.size())));
+        }
+        return nextGen;
     }
 
     public String toString() {
