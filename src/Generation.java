@@ -49,7 +49,7 @@ public class Generation {
         // Select the best chromosomes from the generation with the given selection method
         switch(selectionMethod) {
             default:
-                bestChromosomes = selectTopHalf(genSansElites);
+                bestChromosomes = selectTruncation(genSansElites);
                 break;
             case ROULETTE:
                 bestChromosomes = selectRoulette(genSansElites);
@@ -157,11 +157,13 @@ public class Generation {
     }
 
     // Selects the top 1/2 of the generation to pass through to the next generation
-    private ArrayList<Chromosome> selectTopHalf(ArrayList<Chromosome> newGen) {
+    private ArrayList<Chromosome> selectTruncation(ArrayList<Chromosome> newGen) {
         ArrayList<Chromosome> newGeneration = new ArrayList<Chromosome>();
-        for(int i=newGen.size()/2; i < newGen.size(); i++) {
+        for(int i=9*newGen.size()/10; i < newGen.size(); i++) {
             char[] genes = Arrays.copyOf(newGen.get(i).getGenes(), newGen.get(i).getGenes().length);
-            newGeneration.add(new Chromosome(genes));
+            for(int j=0; j < 5; j++) {
+                newGeneration.add(new Chromosome(genes));
+            }
         }
         return newGeneration;
     }
