@@ -2,7 +2,7 @@ public class DataCollection {
     private static final int NUM_TRIALS = 10, POPULATION_SIZE = 100, CHROMOSOME_SIZE = 1024, ELITISM_COUNT = 10;
     private static final double MUTATION_RATE = 0.001;
     private static final boolean USE_CROSSOVER = false;
-    private static final SelectionMethod[] SELECTION_METHOD = { SelectionMethod.TOP_HALF, SelectionMethod.BEST_RANDOM_WORST };
+    private static final SelectionMethod[] SELECTION_METHOD = { SelectionMethod.TRUNCATION, SelectionMethod.BEST_RANDOM_WORST };
 
     public static void main (String[] args) {
         for (SelectionMethod sm : SELECTION_METHOD) {
