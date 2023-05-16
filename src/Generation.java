@@ -88,6 +88,16 @@ public class Generation {
         return (double)totalFitness/population.length;
     }
 
+    public double getBestFitness() {
+        sortPopulation();
+        return population[population.length-1].getFitness();
+    }
+
+    public Chromosome getBestChromosome() {
+        sortPopulation();
+        return population[population.length-1];
+    }
+
     // Creates 2 mutant children from each parent
     private ArrayList<Chromosome> mutate(ArrayList<Chromosome> bestChromosomes, double mutationRate) {
         ArrayList<Chromosome> newGeneration = new ArrayList<Chromosome>();
@@ -187,10 +197,12 @@ public class Generation {
     private ArrayList<Chromosome> selectBestRandomWorst(ArrayList<Chromosome> newGen) {
         ArrayList<Chromosome> nextGen = new ArrayList<Chromosome>();
         updateFitness();
-        for(int i=0; i < newGen.size()/6; i++) {
+        for(int i=0; i < newGen.size()/4; i++) {
             char[] genes = Arrays.copyOf(newGen.get(i).getGenes(), newGen.get(i).getGenes().length);
             nextGen.add(new Chromosome(genes));
-            genes = Arrays.copyOf(newGen.get(newGen.size() - i-1).getGenes(), newGen.get(newGen.size() - i-1).getGenes().length);
+        }
+        for(int i=0; i < newGen.size()/8; i++) {
+            char[] genes = Arrays.copyOf(newGen.get(newGen.size() - i-1).getGenes(), newGen.get(newGen.size() - i-1).getGenes().length);
             nextGen.add(new Chromosome(genes));
         }
         while(nextGen.size() < newGen.size()/2) {

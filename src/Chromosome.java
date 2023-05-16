@@ -3,8 +3,8 @@ import java.util.Arrays;
 public class Chromosome implements Comparable<Chromosome>{
     private char[] genes;
     private double fitness;
-    private static final byte[] powersOf2 = {0,25,50,75,100};
-    private double setBits;
+    private static final int[] SPECIAL_NUMBERS = {1,2,4,8,16,32,64,128,256,512,1024};
+    private int setBits;
 
     public Chromosome(char[] genes) {
         this.genes = Arrays.copyOf(genes, genes.length);
@@ -12,9 +12,12 @@ public class Chromosome implements Comparable<Chromosome>{
 
     public Chromosome(int length) {
         genes = new char[(length+7)/8];
-        for(int i = 0; i < genes.length; i++) {
-            genes[i] = (char)(Math.random() * 256);
+        for(int i=0; i < genes.length; i++) {
+            genes[i] = 0;
         }
+        // for(int i = 0; i < genes.length; i++) {
+        //     genes[i] = (char)(Math.random() * 256);
+        // }
     }
 
     public char[] getGenes() {
@@ -40,8 +43,8 @@ public class Chromosome implements Comparable<Chromosome>{
         for(int i=0; i < genes.length; i++) {
             setBits += countSetBits(genes[i]);
         }
-        double distToSpecialNum = Double.MAX_VALUE;
-        for(double specialNum : powersOf2) {
+        int distToSpecialNum = Integer.MAX_VALUE;
+        for(int specialNum : SPECIAL_NUMBERS) {
             if(distToSpecialNum > Math.abs(specialNum - setBits)) distToSpecialNum = Math.abs(specialNum - setBits);
         }
         fitness = setBits - distToSpecialNum;
