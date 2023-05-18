@@ -173,16 +173,17 @@ public class Generation {
         for(Chromosome chromo : newGen) {
             chromo.updateFitness();
         }
-        ArrayList<Integer> roulette = new ArrayList<>();
+        ArrayList<Chromosome> roulette = new ArrayList<Chromosome>();
         for (int i = 0; i < newGen.size(); i++) {
+            roulette.add(newGen.get(i));
             for (int j = 0; j < newGen.get(i).getFitness(); j++) {
-                roulette.add(i);
+                roulette.add(newGen.get(i));
             }
         }
         ArrayList<Chromosome> newGeneration = new ArrayList<Chromosome>();
         for(int i=0; i < (newGen.size()+1)/2; i++) {
-            int index = roulette.get((int) (Math.random() * roulette.size()));
-            char[] genes = Arrays.copyOf(newGen.get(index).getGenes(), newGen.get(index).getGenes().length);
+            int index = (int) (Math.random() * roulette.size());
+            char[] genes = Arrays.copyOf(roulette.get(index).getGenes(), roulette.get(index).getGenes().length);
             newGeneration.add(new Chromosome(genes));
         }
         return newGeneration;
